@@ -10,7 +10,7 @@ class CreateChatroomRepository{
   var remoteChatDataSource = RemoteChatDatasource();
 
 
-  Future<bool> creatChatroom(CreateChatRoom createChatRoom) async{
+  Future<String> createChatroom(CreateChatRoom createChatRoom) async{
     var response = await remoteChatDataSource.createChatRoom(createChatRoom.toJson());
     return jsonDecode(response)['data'];
   }

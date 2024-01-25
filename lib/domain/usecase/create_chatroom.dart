@@ -7,8 +7,8 @@ import 'package:mini_project_chatapp/domain/entities/chat_createroom.dart';
 class CreateChatroom{
   var repository = CreateChatroomRepository();
 
-  Future<bool> execute(CreateChatRoom createChatRoom){
-    return repository.creatChatroom(createChatRoom);
+  Future<String> execute(CreateChatRoom createChatRoom){
+    return repository.createChatroom(createChatRoom);
   }
 
 }

@@ -60,8 +60,31 @@ class _ChatPageState extends State<ChatPage> {
                           var message = chats[index].text;
                           var username = chats[index].username;
                           return ListTile(
-                              title: Text(username),
-                              subtitle: Text(message),
+                                title: Align(
+                                  alignment: chats[index].username == senderUser ? Alignment.centerRight : Alignment.centerLeft,
+                                  child: Text(
+                                    '${chats[index].username}',
+                                  ),
+                                ),
+                                subtitle:
+                                  Align(
+                                    alignment: chats[index].username == senderUser ? Alignment.centerRight : Alignment.centerLeft,
+                                    child: Container(
+                                      padding: EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                          color: chats[index].username == senderUser ? Colors.indigo.withOpacity(0.8) : Colors.grey.withOpacity(0.5),
+                                          borderRadius: BorderRadius.circular(8.0)
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          Text('${chats[index].text}', style: TextStyle(color: chats[index].username == senderUser ? Colors.white : Colors.black ), textAlign: chats[index].username == senderUser ? TextAlign.right : TextAlign.left),
+                                          Text('${chats[index].timestamp}', style: TextStyle(fontSize: 12.0, color: chats[index].username == senderUser ? Colors.white : Colors.black), textAlign: chats[index].username == senderUser ? TextAlign.right : TextAlign.left,)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                subtitleTextStyle: TextStyle() ,
                           );
                         },
                       );
@@ -96,7 +119,8 @@ class _ChatPageState extends State<ChatPage> {
                         chatUserData = GetChatlist().execute(id);
                       });
                     },
-                    icon: Icon(Icons.send))
+                    icon: Icon(Icons.send)
+                )
               ],
             ),
           ),
