@@ -25,8 +25,8 @@ class _ChatroomPageState extends State<ChatroomPage>{
   void initState() {
     chatRoom = GetChatroom().execute(widget.username).then(
             (chatRoomsData) {
-              return chatRoomsData.rooms;
-            });
+          return chatRoomsData.rooms;
+        });
     super.initState();
   }
 
@@ -47,41 +47,67 @@ class _ChatroomPageState extends State<ChatroomPage>{
               return Center(child: Text('Error loading chatroom'));
             } else{
               final user = snapshot.data!;
-              final roomIds = snapshot.data!.rooms;
               return ListView.builder(
-                itemCount: roomIds.length,
+                itemCount: user.rooms.length,
                 itemBuilder: (context, index) {
-                  final roomId = roomIds[index];
-                  return FutureBuilder(
-                      future: GetChatlist().execute(roomId),
-                      builder: (context, snapshot){
-                        print(snapshot);
-                        if (snapshot.connectionState == ConnectionState.waiting){
-                          return ListTile(
-                            title: Text('${roomId}'),
-                            subtitle: Text('loading'),
-                          );
-                        } else if (snapshot.hasError || !snapshot.hasData){
-                          return ListTile(
-                            title: Text('${roomId}'),
-                            subtitle: Text('disini error sih ${snapshot.hasError}'),
-                          );
-                        }else{
-                          return ListView.builder(
-                              itemCount: roomId.length,
-                              itemBuilder: (context, index){
-                                final chatList = snapshot.data!;
-                                final receiverUser = chatList.users.where((user) => user.username != widget.username);
-                                return ListTile(
-                                  title: Text(roomId),
-                                  subtitle: Text('Receiver: ${receiverUser.map((user) => user.username).join(', ')}'),
-                                  onTap:(){
+                  final roomId = user.rooms[index];
+                  print('INI DEBUGGING 3 ${roomId}');
+                  return FutureBuilder<ChatuserList>(
+                    future: GetChatlist().execute(roomId),
+                    builder: (context, snapshot) {
+                      print('INI DEBUGGING 2 ${snapshot}');
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return ListTile(
+                          title: Text(roomId),
+                          subtitle: Text('Loading...'),
+                          onTap: () {
+                            // Handle onTap as needed
+                          },
+                        );
+                      } else if (snapshot.hasError) {
+                        print('Error loading chat room data for room $roomId: ${snapshot.error}');
+                        return ListTile(
+                          title: Text(roomId),
+                          subtitle: Text('Error loading chat room data'),
+                          onTap: () {
+                            // Handle onTap as needed
+                          },
+                        );
+                      } else if (!snapshot.hasData) {
+                        print('No data available for chat room $roomId');
+                        return ListTile(
+                          title: Text(roomId),
+                          subtitle: Text('No data available for chat room'),
+                          onTap: () {
+                            // Handle onTap as needed
+                          },
+                        );
+                      } else {
+                        final chatUserlist = snapshot.data!;
+                        final receiverUser = chatUserlist.usernames.where((username) => username != widget.username).toList();
+                        final receiverSlicedUser = receiverUser.map((username) => username).join(', ');
+                        final chatMessage = chatUserlist.messages;
 
-                                  }
-                                );
-                              });
-                        }
-                      });
+                        return ListTile(
+                          leading: CircleAvatar(
+                            child: Text(
+                              receiverSlicedUser.isNotEmpty ? receiverSlicedUser[0].toUpperCase() : '?',
+                              style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,)
+                          )
+                          ),
+                          title: Text('${receiverSlicedUser}', style: TextStyle(fontWeight: FontWeight.bold),),
+                          subtitle: Text('${chatMessage[0].text}'),
+                          onTap: () {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => ChatPage('${receiverSlicedUser}', roomId))
+                            );
+                          },
+                        );
+                      }
+                    },
+                  );
                 },
               );
             }

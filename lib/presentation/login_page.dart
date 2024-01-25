@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:mini_project_chatapp/domain/usecase/get_chatlist.dart';
 import 'package:mini_project_chatapp/domain/usecase/get_chatroom.dart';
@@ -9,7 +7,7 @@ import 'package:mini_project_chatapp/presentation/chat_room_page.dart';
 class LoginPage extends StatefulWidget{
   @override
   State<StatefulWidget> createState() => _LoginPageState();
-  
+
 }
 
 class _LoginPageState extends State<LoginPage>{
@@ -41,7 +39,7 @@ class _LoginPageState extends State<LoginPage>{
                   setState(() {
                     try{
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ChatroomPage(_usernameController.text))
+                          MaterialPageRoute(builder: (context) => ChatroomPage(_usernameController.text))
                       );
                     }catch(e){
                       print(e);
@@ -52,7 +50,7 @@ class _LoginPageState extends State<LoginPage>{
           ],
         ),
       ),
-    );  
+    );
   }
-  
+
 }
