@@ -120,8 +120,9 @@ class _ChatroomPageState extends State<ChatroomPage>{
       ),
       floatingActionButton: FloatingActionButton(
         onPressed:(){
+          final senderUser = widget.username;
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => NewChatPage())
+            MaterialPageRoute(builder: (context) => NewChatPage(senderUser))
           );
         } ,
         child: Icon(Icons.add_comment_outlined),

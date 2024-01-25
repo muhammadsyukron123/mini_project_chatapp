@@ -70,8 +70,8 @@ class RemoteChatDatasource{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode({
-        'from': room['username'],
-        'to': room['receiverUsername'],
+        'from': room['from'],
+        'to': room['to'],
       }),
     );
 

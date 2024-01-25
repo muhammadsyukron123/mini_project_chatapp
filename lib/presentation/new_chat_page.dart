@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:mini_project_chatapp/domain/entities/chat_createroom.dart';
+
+import '../domain/usecase/create_chatroom.dart';
 
 class NewChatPage extends StatefulWidget{
+  late String senderUser;
+  NewChatPage(this.senderUser);
+
   @override
-  State<StatefulWidget> createState() => _NewChatPageState();
+  State<StatefulWidget> createState() => _NewChatPageState(this.senderUser);
 }
 
 class _NewChatPageState extends State<NewChatPage>{
+  late String senderUser;
+  _NewChatPageState(this.senderUser);
+
   TextEditingController _newReceiver = TextEditingController();
 
 
@@ -19,13 +28,33 @@ class _NewChatPageState extends State<NewChatPage>{
         children: [
           Container(
             padding: EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _newReceiver,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'username',
-                hintText: 'Masukkan username baru disini'
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _newReceiver,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'username',
+                      hintText: 'Masukkan username baru disini'
+                    ),
+                  ),
+                ),
+                IconButton(
+                    onPressed: () async {
+                      await CreateChatroom().execute(
+                        CreateChatRoom(
+                            username: widget.senderUser,
+                            receiverUsername: _newReceiver.text)
+                      );
+
+                      setState(() {
+
+                      });
+                    },
+                    icon: Icon(Icons.send_rounded),
+                )
+              ]
             ),
           )
         ],
