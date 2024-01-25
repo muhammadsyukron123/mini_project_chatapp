@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:mini_project_chatapp/domain/entities/chat_room.dart';
+import 'package:mini_project_chatapp/domain/entities/chat_user_list.dart';
 import 'package:mini_project_chatapp/domain/usecase/get_chatlist.dart';
+import 'package:mini_project_chatapp/domain/usecase/get_chatroom.dart';
 
 class ChatPage extends StatefulWidget {
   late String username;
@@ -15,12 +18,15 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   late String username;
   late String id;
+  late Future<ChatuserList> chatUserData;
   TextEditingController _messageController = TextEditingController();
+
 
   _ChatPageState(this.username, this.id);
 
   @override
   void initState() {
+    chatUserData = GetChatlist().execute(id);
     super.initState();
   }
 
@@ -33,79 +39,50 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(
         children: [
           Expanded(
-            child: FutureBuilder(
-                future: GetChatlist().execute(id),
-                builder: (context, snapshot){
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return ListTile(
-                      title: Text(id),
-                      subtitle: Text('Loading...'),
-                      onTap: () {
-                        // Handle onTap as needed
-                      },
-                    );
-                  } else if (snapshot.hasError) {
-                    print('Error loading chat room data for room $id: ${snapshot.error}');
-                    return ListTile(
-                      title: Text(id),
-                      subtitle: Text('Error loading chat room data'),
-                      onTap: () {
-                        // Handle onTap as needed
-                      },
-                    );
-                  } else if (!snapshot.hasData) {
-                    print('No data available for chat room $id');
-                    return ListTile(
-                      title: Text(id),
-                      subtitle: Text('No data available for chat room'),
-                      onTap: () {
-                        // Handle onTap as needed
-                      },
-                    );
-                  } else {
-                    final chatUserlist = snapshot.data!;
-                    final receiverUser = chatUserlist.usernames.where((username) => username != widget.username).toList();
-                    final receiverSlicedUser = receiverUser.map((username) => username).join(', ');
-                    final chatMessage = chatUserlist.messages;
+            child: FutureBuilder<ChatuserList>(
+              future: chatUserData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError || !snapshot.hasData) {
+                  return Center(child: Text('Error loading chatroom'));
+                } else {
+                  final message = snapshot.data!;
+                  final chats = message.messages;
 
-                    return ListTile(
-                      leading: CircleAvatar(
-                          child: Text(
-                              receiverSlicedUser.isNotEmpty ? receiverSlicedUser[0].toUpperCase() : '?',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,)
-                          )
-                      ),
-                      title: Text('${receiverSlicedUser}', style: TextStyle(fontWeight: FontWeight.bold),),
-                      subtitle: Text('${chatMessage[]}'),
-                      onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => ChatPage('${receiverSlicedUser}', roomId))
+                  return ListView.builder(
+                      itemCount: chats.length,
+                      itemBuilder: (context, index) {
+                        var message = chats[index].text;
+                        return ListTile(
+                          title: Text(message),
                         );
                       },
-                    );
-                  }
-                })
+                  );
+                }
+              })
           ),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _messageController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Message',
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Message',
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(width: 8.0),
-              OutlinedButton(
-                  onPressed: (){
-
-                  },
-                  child: Icon(Icons.send))
-            ],
+                SizedBox(width: 8.0),
+                OutlinedButton(
+                    onPressed: (){
+            
+                    },
+                    child: Icon(Icons.send))
+              ],
+            ),
           ),
         ],
       ),
