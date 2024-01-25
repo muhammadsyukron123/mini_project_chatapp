@@ -58,8 +58,10 @@ class _ChatPageState extends State<ChatPage> {
                         itemCount: chats.length,
                         itemBuilder: (context, index) {
                           var message = chats[index].text;
+                          var username = chats[index].username;
                           return ListTile(
-                            title: Text(message),
+                              title: Text(username),
+                              subtitle: Text(message),
                           );
                         },
                       );
@@ -80,19 +82,21 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                 ),
                 SizedBox(width: 8.0),
-                OutlinedButton(
-                    onPressed: (){
+                IconButton(
+                    onPressed: () async {
+                      await PostChat().execute(
+                          ChatSendMessage(
+                              id: id,
+                              senderUsername: senderUser,
+                              text: _messageController.text
+                          )
+                      );
+
                       setState(() {
-                        PostChat().execute(
-                            ChatSendMessage(
-                                id: id,
-                                senderUsername: senderUser,
-                                text: _messageController.text
-                            )
-                        );
+                        chatUserData = GetChatlist().execute(id);
                       });
                     },
-                    child: Icon(Icons.send))
+                    icon: Icon(Icons.send))
               ],
             ),
           ),

@@ -5,6 +5,7 @@ import 'package:mini_project_chatapp/domain/entities/chat_user_list.dart';
 import 'package:mini_project_chatapp/domain/usecase/get_chatlist.dart';
 import 'package:mini_project_chatapp/domain/usecase/get_chatroom.dart';
 import 'package:mini_project_chatapp/presentation/chat_page.dart';
+import 'package:mini_project_chatapp/presentation/new_chat_page.dart';
 
 class ChatroomPage extends StatefulWidget{
   late String username;
@@ -89,22 +90,24 @@ class _ChatroomPageState extends State<ChatroomPage>{
                         final receiverSlicedUser = receiverUser.map((username) => username).join(', ');
                         final chatMessage = chatUserlist.messages;
 
-                        return ListTile(
-                          leading: CircleAvatar(
-                              child: Text(
-                                  receiverSlicedUser.isNotEmpty ? receiverSlicedUser[0].toUpperCase() : '?',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,)
-                              )
+                        return Card(
+                          child: ListTile(
+                            leading: CircleAvatar(
+                                child: Text(
+                                    receiverSlicedUser.isNotEmpty ? receiverSlicedUser[0].toUpperCase() : '?',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,)
+                                )
+                            ),
+                            title: Text('${receiverSlicedUser}', style: TextStyle(fontWeight: FontWeight.bold),),
+                            subtitle: Text('${chatMessage[0].text}'),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) => ChatPage('${receiverSlicedUser}', roomId, senderUser))
+                              );
+                            },
                           ),
-                          title: Text('${receiverSlicedUser}', style: TextStyle(fontWeight: FontWeight.bold),),
-                          subtitle: Text('${chatMessage[0].text}'),
-                          onTap: () {
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => ChatPage('${receiverSlicedUser}', roomId, senderUser))
-                            );
-                          },
                         );
                       }
                     },
@@ -115,6 +118,16 @@ class _ChatroomPageState extends State<ChatroomPage>{
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed:(){
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => NewChatPage())
+          );
+        } ,
+        child: Icon(Icons.add_comment_outlined),
+      ),
     );
   }
+
+
 }
