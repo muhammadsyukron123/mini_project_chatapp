@@ -72,10 +72,9 @@ class ChatuserList {
 
   }
 
-  // List<Chatroom> getUserChatrooms() {
-  //   return usernames.map((username) {
-  //     return Chatroom(username: username, rooms: []); // Create Chatroom objects based on usernames
-  //   }).toList();
-  // }
+// List<Chatroom> getUserChatrooms() {
+//   return usernames.map((username) {
+//     return Chatroom(username: username, rooms: []); // Create Chatroom objects based on usernames
+//   }).toList();
+// }
 }
-

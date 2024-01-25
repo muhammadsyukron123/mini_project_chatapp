@@ -1,28 +1,32 @@
 
 import 'package:flutter/material.dart';
 import 'package:mini_project_chatapp/domain/entities/chat_room.dart';
+import 'package:mini_project_chatapp/domain/entities/chat_sendmessage.dart';
 import 'package:mini_project_chatapp/domain/entities/chat_user_list.dart';
 import 'package:mini_project_chatapp/domain/usecase/get_chatlist.dart';
 import 'package:mini_project_chatapp/domain/usecase/get_chatroom.dart';
+import 'package:mini_project_chatapp/domain/usecase/post_chat.dart';
 
 class ChatPage extends StatefulWidget {
   late String username;
   late String id;
+  late String senderUser;
 
-  ChatPage(this.username, this.id);
+  ChatPage(this.username, this.id, this.senderUser);
 
   @override
-  State<StatefulWidget> createState() => _ChatPageState(this.username, this.id);
+  State<StatefulWidget> createState() => _ChatPageState(this.username, this.id, this.senderUser);
 }
 
 class _ChatPageState extends State<ChatPage> {
   late String username;
   late String id;
+  late String senderUser;
   late Future<ChatuserList> chatUserData;
   TextEditingController _messageController = TextEditingController();
 
 
-  _ChatPageState(this.username, this.id);
+  _ChatPageState(this.username, this.id, this.senderUser);
 
   @override
   void initState() {
@@ -39,28 +43,28 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(
         children: [
           Expanded(
-            child: FutureBuilder<ChatuserList>(
-              future: chatUserData,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError || !snapshot.hasData) {
-                  return Center(child: Text('Error loading chatroom'));
-                } else {
-                  final message = snapshot.data!;
-                  final chats = message.messages;
+              child: FutureBuilder<ChatuserList>(
+                  future: chatUserData,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError || !snapshot.hasData) {
+                      return Center(child: Text('Error loading chatroom'));
+                    } else {
+                      final message = snapshot.data!;
+                      final chats = message.messages;
 
-                  return ListView.builder(
-                      itemCount: chats.length,
-                      itemBuilder: (context, index) {
-                        var message = chats[index].text;
-                        return ListTile(
-                          title: Text(message),
-                        );
-                      },
-                  );
-                }
-              })
+                      return ListView.builder(
+                        itemCount: chats.length,
+                        itemBuilder: (context, index) {
+                          var message = chats[index].text;
+                          return ListTile(
+                            title: Text(message),
+                          );
+                        },
+                      );
+                    }
+                  })
           ),
           Container(
             padding: EdgeInsets.all(8.0),
@@ -78,7 +82,15 @@ class _ChatPageState extends State<ChatPage> {
                 SizedBox(width: 8.0),
                 OutlinedButton(
                     onPressed: (){
-            
+                      setState(() {
+                        PostChat().execute(
+                            ChatSendMessage(
+                                id: id,
+                                senderUsername: senderUser,
+                                text: _messageController.text
+                            )
+                        );
+                      });
                     },
                     child: Icon(Icons.send))
               ],
