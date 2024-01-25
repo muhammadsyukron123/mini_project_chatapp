@@ -2,7 +2,7 @@
 class ChatMessage{
   String username;
   String text;
-  String timestamp;
+  var timestamp;
 
   ChatMessage({required this.username, required this.text, required this.timestamp});
 

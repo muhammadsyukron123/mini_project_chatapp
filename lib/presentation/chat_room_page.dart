@@ -85,23 +85,24 @@ class _ChatroomPageState extends State<ChatroomPage>{
                       } else {
                         final chatUserlist = snapshot.data!;
                         final receiverUser = chatUserlist.usernames.where((username) => username != widget.username).toList();
+                        final senderUser = widget.username;
                         final receiverSlicedUser = receiverUser.map((username) => username).join(', ');
                         final chatMessage = chatUserlist.messages;
 
                         return ListTile(
                           leading: CircleAvatar(
-                            child: Text(
-                              receiverSlicedUser.isNotEmpty ? receiverSlicedUser[0].toUpperCase() : '?',
-                              style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,)
-                          )
+                              child: Text(
+                                  receiverSlicedUser.isNotEmpty ? receiverSlicedUser[0].toUpperCase() : '?',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,)
+                              )
                           ),
                           title: Text('${receiverSlicedUser}', style: TextStyle(fontWeight: FontWeight.bold),),
                           subtitle: Text('${chatMessage[0].text}'),
                           onTap: () {
                             Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => ChatPage('${receiverSlicedUser}', roomId))
+                                MaterialPageRoute(builder: (context) => ChatPage('${receiverSlicedUser}', roomId, senderUser))
                             );
                           },
                         );

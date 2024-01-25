@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 class RemoteChatDatasource{
@@ -24,6 +26,43 @@ class RemoteChatDatasource{
       throw Exception('Failed to get chat data');
     }
   }
+
+  // Future<String> postChat(Map<String, dynamic> chat) async {
+  //   var response = await http.post(
+  //     Uri.parse('${URL}/api/chat'),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //     },
+  //     body: jsonEncode(<String, dynamic>{
+  //       'nama': chat['id'],
+  //       'usia': chat['username'],
+  //       'keterangan': chat['text']
+  //     }),
+  //   );
+  //
+  //   print(response.body);
+  //
+  //   return response.body;
+  // }
+
+  Future<String> postChat(Map<String, dynamic> chat) async {
+    var response = await http.post(
+      Uri.parse('${URL}/api/chat'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'id': chat['id'],
+        'from': chat['username'],
+        'text': chat['text'],
+      }),
+    );
+
+    print(response.body);
+
+    return response.body;
+  }
+
 
 
 }
