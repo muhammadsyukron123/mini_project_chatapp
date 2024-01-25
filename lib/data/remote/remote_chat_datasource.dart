@@ -63,6 +63,21 @@ class RemoteChatDatasource{
     return response.body;
   }
 
+  Future<String> createChatRoom(Map<String, dynamic> room) async{
+    var response = await http.post(
+      Uri.parse('${URL}/api/room'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'from': room['username'],
+        'to': room['receiverUsername'],
+      }),
+    );
+
+    return response.body;
+  }
+
 
 
 }
