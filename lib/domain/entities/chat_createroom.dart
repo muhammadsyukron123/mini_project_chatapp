@@ -1,8 +1,8 @@
 
 
 class CreateChatRoom{
-  String username;
-  String receiverUsername;
+  var username;
+  var receiverUsername;
 
   CreateChatRoom({required this.username, required this.receiverUsername});
 
@@ -15,8 +15,8 @@ class CreateChatRoom{
 
   Map<String, dynamic> toJson(){
     return {
-      'from' : this.username,
-      'to' : this.receiverUsername,
+      'from' : username,
+      'to' : receiverUsername,
     };
   }
 

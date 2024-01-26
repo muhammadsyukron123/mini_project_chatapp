@@ -27,24 +27,6 @@ class RemoteChatDatasource{
     }
   }
 
-  // Future<String> postChat(Map<String, dynamic> chat) async {
-  //   var response = await http.post(
-  //     Uri.parse('${URL}/api/chat'),
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //     body: jsonEncode(<String, dynamic>{
-  //       'nama': chat['id'],
-  //       'usia': chat['username'],
-  //       'keterangan': chat['text']
-  //     }),
-  //   );
-  //
-  //   print(response.body);
-  //
-  //   return response.body;
-  // }
-
   Future<String> postChat(Map<String, dynamic> chat) async {
     var response = await http.post(
       Uri.parse('${URL}/api/chat'),
@@ -74,6 +56,8 @@ class RemoteChatDatasource{
         'to': room['to'],
       }),
     );
+
+    print('Ini response bodynya createchatroom ${response.body}<<<<<<');
 
     return response.body;
   }
