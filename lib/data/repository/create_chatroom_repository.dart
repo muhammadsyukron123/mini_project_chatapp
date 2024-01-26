@@ -10,9 +10,23 @@ class CreateChatroomRepository{
   var remoteChatDataSource = RemoteChatDatasource();
 
 
-  Future<String> createChatroom(CreateChatRoom createChatRoom) async{
+  // Future<String> createChatroom(CreateChatRoom createChatRoom) async{
+  //   var response = await remoteChatDataSource.createChatRoom(createChatRoom.toJson());
+  //   return jsonDecode(response)['data'];
+  // }
+
+  Future<String> createChatroom(CreateChatRoom createChatRoom) async {
     var response = await remoteChatDataSource.createChatRoom(createChatRoom.toJson());
-    return jsonDecode(response)['data'];
+    print('print createchatroom response${response}');
+    var responseData = jsonDecode(response)['data'];
+    print('Ini response data createchatroom : ${responseData}');
+
+    if (responseData != null) {
+      return responseData;
+    } else {
+      throw Exception('Error creating chatroom: Null response data');
+    }
   }
+
 
 }

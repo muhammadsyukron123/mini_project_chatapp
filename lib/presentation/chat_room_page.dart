@@ -101,7 +101,7 @@ class _ChatroomPageState extends State<ChatroomPage>{
                                 )
                             ),
                             title: Text('${receiverSlicedUser}', style: TextStyle(fontWeight: FontWeight.bold),),
-                            subtitle: Text('${chatMessage[0].text}'),
+                            subtitle: chatMessage.isNotEmpty ? Text('${chatMessage.last.text}') : Text(''),
                             onTap: () {
                               Navigator.of(context).push(
                                   MaterialPageRoute(builder: (context) => ChatPage('${receiverSlicedUser}', roomId, senderUser))
@@ -122,7 +122,7 @@ class _ChatroomPageState extends State<ChatroomPage>{
         onPressed:(){
           final senderUser = widget.username;
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => NewChatPage(senderUser))
+              MaterialPageRoute(builder: (context) => NewChatPage(senderUser))
           );
         } ,
         child: Icon(Icons.add_comment_outlined),

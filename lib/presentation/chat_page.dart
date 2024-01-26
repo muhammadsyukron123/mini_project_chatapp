@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mini_project_chatapp/domain/entities/chat_room.dart';
 import 'package:mini_project_chatapp/domain/entities/chat_sendmessage.dart';
 import 'package:mini_project_chatapp/domain/entities/chat_user_list.dart';
@@ -27,6 +28,7 @@ class _ChatPageState extends State<ChatPage> {
 
 
   _ChatPageState(this.username, this.id, this.senderUser);
+
 
   @override
   void initState() {
@@ -57,13 +59,16 @@ class _ChatPageState extends State<ChatPage> {
                       return ListView.builder(
                         itemCount: chats.length,
                         itemBuilder: (context, index) {
+                          int timestamp = int.parse(chats[index].timestamp);
+                          DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+                          String formattedTime = DateFormat('HH:mm').format(dateTime);
                           var message = chats[index].text;
                           var username = chats[index].username;
                           return ListTile(
                                 title: Align(
                                   alignment: chats[index].username == senderUser ? Alignment.centerRight : Alignment.centerLeft,
                                   child: Text(
-                                    '${chats[index].username}',
+                                    '${chats[index].username}', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w100),
                                   ),
                                 ),
                                 subtitle:
@@ -79,8 +84,8 @@ class _ChatPageState extends State<ChatPage> {
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           Text('${chats[index].text}', style: TextStyle(color: chats[index].username == senderUser ? Colors.white : Colors.black ), textAlign: chats[index].username == senderUser ? TextAlign.right : TextAlign.left),
-                                          Text('${chats[index].timestamp}', style: TextStyle(fontSize: 12.0, color: chats[index].username == senderUser ? Colors.white : Colors.black), textAlign: chats[index].username == senderUser ? TextAlign.right : TextAlign.left,)
-                                        ],
+                                          Text('${formattedTime}', style: TextStyle(fontSize: 12.0, color: chats[index].username == senderUser ? Colors.white : Colors.black), textAlign: chats[index].username == senderUser ? TextAlign.right : TextAlign.left,)
+                                        ]
                                       ),
                                     ),
                                   ),

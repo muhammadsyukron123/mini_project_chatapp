@@ -15,6 +15,7 @@ class _NewChatPageState extends State<NewChatPage>{
   late String senderUser;
   _NewChatPageState(this.senderUser);
 
+
   TextEditingController _newReceiver = TextEditingController();
 
 
@@ -44,15 +45,15 @@ class _NewChatPageState extends State<NewChatPage>{
                     onPressed: () async {
                       await CreateChatroom().execute(
                         CreateChatRoom(
-                            username: widget.senderUser,
+                            username: senderUser,
                             receiverUsername: _newReceiver.text)
                       );
-
+                      print('this is the sender user form newchatpage : ${senderUser}');
                       setState(() {
 
                       });
                     },
-                    icon: Icon(Icons.send_rounded),
+                  icon: Icon(Icons.send_rounded),
                 )
               ]
             ),
