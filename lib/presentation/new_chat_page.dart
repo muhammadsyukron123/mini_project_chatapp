@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project_chatapp/domain/entities/chat_createroom.dart';
+import 'package:mini_project_chatapp/domain/entities/chat_room.dart';
+import 'package:mini_project_chatapp/presentation/chat_room_page.dart';
 
 import '../domain/usecase/create_chatroom.dart';
 
@@ -14,7 +16,6 @@ class NewChatPage extends StatefulWidget{
 class _NewChatPageState extends State<NewChatPage>{
   late String senderUser;
   _NewChatPageState(this.senderUser);
-
 
   TextEditingController _newReceiver = TextEditingController();
 
@@ -42,16 +43,18 @@ class _NewChatPageState extends State<NewChatPage>{
                   ),
                 ),
                 IconButton(
-                    onPressed: () async {
-                      await CreateChatroom().execute(
-                        CreateChatRoom(
-                            username: senderUser,
-                            receiverUsername: _newReceiver.text)
-                      );
-                      print('this is the sender user form newchatpage : ${senderUser}');
+                    onPressed: (){
                       setState(() {
-
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => ChatroomPage(senderUser))
+                        );
+                        CreateChatroom().execute(
+                          CreateChatRoom(
+                              username: senderUser,
+                              receiverUsername: _newReceiver.text),
+                        );
                       });
+
                     },
                   icon: Icon(Icons.send_rounded),
                 )

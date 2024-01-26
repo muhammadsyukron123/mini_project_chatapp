@@ -24,6 +24,7 @@ class _ChatroomPageState extends State<ChatroomPage>{
 
   @override
   void initState() {
+    GetChatlist().execute(widget.username);
     chatRoom = GetChatroom().execute(widget.username).then(
             (chatRoomsData) {
           return chatRoomsData.rooms;
@@ -103,9 +104,11 @@ class _ChatroomPageState extends State<ChatroomPage>{
                             title: Text('${receiverSlicedUser}', style: TextStyle(fontWeight: FontWeight.bold),),
                             subtitle: chatMessage.isNotEmpty ? Text('${chatMessage.last.text}') : Text(''),
                             onTap: () {
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) => ChatPage('${receiverSlicedUser}', roomId, senderUser))
-                              );
+                              setState(() {
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) => ChatPage('${receiverSlicedUser}', roomId, senderUser))
+                                );
+                              });
                             },
                           ),
                         );
