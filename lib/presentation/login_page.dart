@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage>{
                 onPressed: (){
                   setState(() {
                     try{
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) => ChatroomPage(_usernameController.text))
                       );
                     }catch(e){
