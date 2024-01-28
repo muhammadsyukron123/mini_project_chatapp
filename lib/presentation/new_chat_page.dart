@@ -45,7 +45,7 @@ class _NewChatPageState extends State<NewChatPage>{
                 IconButton(
                     onPressed: (){
                       setState(() {
-                        Navigator.of(context).push(
+                        Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) => ChatroomPage(senderUser))
                         );
                         CreateChatroom().execute(

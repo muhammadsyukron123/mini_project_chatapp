@@ -7,6 +7,7 @@ import 'package:mini_project_chatapp/domain/entities/chat_user_list.dart';
 import 'package:mini_project_chatapp/domain/usecase/get_chatlist.dart';
 import 'package:mini_project_chatapp/domain/usecase/get_chatroom.dart';
 import 'package:mini_project_chatapp/domain/usecase/post_chat.dart';
+import 'package:mini_project_chatapp/presentation/login_page.dart';
 
 class ChatPage extends StatefulWidget {
   late String username;
@@ -40,7 +41,17 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User: ${username}'),
+        title: ListTile(leading: CircleAvatar(
+            child: Text(
+                username.isNotEmpty ? username[0].toUpperCase() : '?',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,)
+            )
+        ),
+          title: Text(username),
+
+        ),
       ),
       body: Column(
         children: [
@@ -119,6 +130,7 @@ class _ChatPageState extends State<ChatPage> {
                               text: _messageController.text
                           )
                       );
+                      _messageController.clear();
 
                       setState(() {
                         chatUserData = GetChatlist().execute(id);
