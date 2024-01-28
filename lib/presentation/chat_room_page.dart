@@ -7,6 +7,8 @@ import 'package:mini_project_chatapp/domain/usecase/get_chatroom.dart';
 import 'package:mini_project_chatapp/presentation/chat_page.dart';
 import 'package:mini_project_chatapp/presentation/new_chat_page.dart';
 
+import 'login_page.dart';
+
 class ChatroomPage extends StatefulWidget{
   late String username;
   ChatroomPage(this.username);
@@ -36,7 +38,20 @@ class _ChatroomPageState extends State<ChatroomPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chatroom'),
+        title: Align(alignment: Alignment.center,child: Text('Chatroom')),
+          automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+              onPressed: (){
+                setState(() {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => LoginPage())
+                  );
+                });
+              },
+              icon: Icon(Icons.logout_rounded)
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(8.0),
