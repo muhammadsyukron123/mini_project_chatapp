@@ -11,6 +11,7 @@ class ChatRepository {
     var jsonArray = jsonDecode(await remoteChatDatasource.getChatrooms(username))['data'];
     Chatroom chatroom = Chatroom.fromJson(jsonArray);
     print(jsonArray.toString());
+    var jsonArrayResponse = jsonArray.toString();
     return chatroom;
   }
 }

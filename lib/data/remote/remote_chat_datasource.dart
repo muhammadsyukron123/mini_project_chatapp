@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class RemoteChatDatasource{
-  static const URL = 'http://192.168.1.5:8080';
+  static const URL = 'http://127.0.0.1:8080';
+  static var responseGetchatrooms ='';
   // 'http://127.0.0.1:8080'
 
-  // ?dapet roomId
   Future<String> getChatrooms(String username) async{
     var response = await http.get(Uri.parse('${URL}/api/user/${username}'));
+
+    // i want to pass this responseBody to the LoginPage
+    responseGetchatrooms = response.body;
 
     if(response.statusCode == 200) {
       return response.body;
